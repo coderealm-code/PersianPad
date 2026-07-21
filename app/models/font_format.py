@@ -37,7 +37,8 @@ class FontFormatModel:
     def __init__(self):
         
         self.font_loader = FontLoader()
-        base_path = Path("app/resources/fonts")
+        BASE_DIR = Path(__file__).resolve().parents[2]
+        base_path = BASE_DIR / "app" / "resources" / "fonts"
 
         self.fonts = [FontItem(title="نازنین"  , path=base_path / "nazanin.ttf"),
                       FontItem(title="وزیر"    , path=base_path / "Vazir.ttf"),
