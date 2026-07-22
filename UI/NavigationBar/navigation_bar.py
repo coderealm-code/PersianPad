@@ -1,4 +1,5 @@
 import sys
+from PersianPad.core.path_handler import PathHandler
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QButtonGroup, QHBoxLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap, QIcon
@@ -28,11 +29,13 @@ class NavigationBar(QWidget):
         self.view_btn = QPushButton("نمایش")
         self.help_btn = QPushButton("راهنما")
 
-        pixmap = QPixmap("UI/NavigationBar/icons/setting.png")
-        pixmap.scaled(24, 24, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        icon_path = PathHandler.icon("setting.png")
+        pixmap = QPixmap(icon_path)
+        pixmap.scaled(32, 32, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.setting_btn = QPushButton()
         self.setting_btn.setIcon(QIcon(pixmap))
         self.setting_btn.setObjectName("setting_button")
+        self.setting_btn.setCursor(Qt.PointingHandCursor)
         self.setting_btn.setFixedSize(NavigationBarMetrics.btn_width / 2, NavigationBarMetrics.btn_height)
 
         self.btn_group = QButtonGroup(self)
