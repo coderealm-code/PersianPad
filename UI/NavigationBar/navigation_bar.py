@@ -1,14 +1,22 @@
 import sys
-
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QButtonGroup, QHBoxLayout
 from PySide6.QtCore import Qt
-from PersianPad.metrics.metrics import NavigationBarMetrics
+from PySide6.QtGui import QPixmap, QIcon
+from PersianPad.shared.metrics import NavigationBarMetrics
+from PersianPad.shared.colors import NavigationBarColors
+from PersianPad.core.font_loader import FontLoader
+from PersianPad.shared.fonts import Fonts
 
 class NavigationBar(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setAutoFillBackground(True)
+        self.setObjectName("NavigationBar")
         self.setLayoutDirection(Qt.RightToLeft)
         self.setFixedSize(NavigationBarMetrics.width, NavigationBarMetrics.height)
+        self.fontLoader = FontLoader()
+        self.font = self.fontLoader.load_font(font_name=Fonts.DEFAULT_FONT_NAME)
+        self.setFont(self.font)
 
         self.layout = QHBoxLayout()
         self.layout.setContentsMargins(0,0,0,0)
@@ -20,9 +28,12 @@ class NavigationBar(QWidget):
         self.view_btn = QPushButton("نمایش")
         self.help_btn = QPushButton("راهنما")
 
-        self.setting_btn = QPushButton("تنظیمات")
+        pixmap = QPixmap("UI/NavigationBar/icons/setting.png")
+        pixmap.scaled(24, 24, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.setting_btn = QPushButton()
+        self.setting_btn.setIcon(QIcon(pixmap))
         self.setting_btn.setObjectName("setting_button")
-        self.setting_btn.setFixedSize(NavigationBarMetrics.btn_width, NavigationBarMetrics.btn_height)
+        self.setting_btn.setFixedSize(NavigationBarMetrics.btn_width / 2, NavigationBarMetrics.btn_height)
 
         self.btn_group = QButtonGroup(self)
         self.btn_group.setExclusive(True)
@@ -48,9 +59,36 @@ class NavigationBar(QWidget):
 
         self.setLayout(self.layout)
 
+        self.setStyleSheet(f"""
+                        QWidget#NavigationBar  {{
+                            background-color: {NavigationBarColors.BACKGROUND_COLOR.name()};
+                            border-radius: 0px;
+                            margin: 0px;
+                            border: none;
+                            padding: 0px;
+                        }}
+                        QPushButton {{
+                            background-color: {NavigationBarColors.BACKGROUND_COLOR_BTN.name()};
+                            color: {NavigationBarColors.TEXT_COLOR_PRIMARY.name()};
+                            border: none;
+                            margin: 0px;
+                            padding: 0px;
+                        }}
+                        
+                        QPushButton:hover {{
+                            background-color: {NavigationBarColors.HOVER.name()};
+                        }}
+                        
+                        QPushButton:checked {{
+                            background-color: {NavigationBarColors.SELECTED_BTN.name()};
+                        }}
+                    """)
 
-    def button_clicked(self, id):
-        print(f"button clicked {id}\n button text: {id.text()}")
+
+    def button_clicked(self, btn) -> None:
+        print(f"button clicked {btn}\n button text: {btn.text()}")
+
+        return None
 
 
 if __name__ == "__main__":

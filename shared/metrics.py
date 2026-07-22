@@ -17,5 +17,5 @@ class NavigationBarMetrics:
     height: int = 40
     width: int = MainWindowMetrics.width
 
-    btn_width: int = 50
+    btn_width: int = 100
     btn_height: int = height
