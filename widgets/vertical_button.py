@@ -31,15 +31,17 @@ class VerticalButton(QPushButton):
         self.pic_label.setPixmap(scaled_pixmap)
         self.pic_label.setFixedSize(72, 72)
         self.pic_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-
+        self.pic_label.setStyleSheet("QLabel { background-color: transparent;}")
 
         self.layout.addWidget(self.pic_label)
         self.layout.addSpacing(15)
         self.layout.addWidget(self.text_label)
-
-
         self.setLayout(self.layout)
+
+        self.setStyleSheet("""QPushButton { background-color: transparent;
+                                            border: none;
+                                            border-radius: 10px;}
+                              QPushButton:pressed { background-color: #f2f2f2; border-radius: 10px;}""")
 
 
 
