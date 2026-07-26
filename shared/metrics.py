@@ -22,11 +22,24 @@ class NavigationBarMetrics:
 
 
 @dataclass
+class ContainerWidgetMetrics:
+    """Metrics for the container widget"""
+    width: int = MainWindowMetrics.width
+    height: int = (30 / 100) * MainWindowMetrics.height # 30% OF THE WINDOW = 216 IN HERE
+
+
+@dataclass
 class FileManagerMetrics:
     """Metrics for the file manager"""
-    width: int = 500
-    height: int = 30 / MainWindowMetrics.height*100
+    width: int = 576
+    height: int = MainWindowMetrics.height
+
     button_width: int = 80
     button_height: int = 100
 
     label_height: int = 30
+    label_width: int = 576
+
+
+
+

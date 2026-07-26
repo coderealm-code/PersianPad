@@ -25,3 +25,12 @@ class PathHandler:
     @classmethod
     def style(cls, name: str) -> Path:
         return cls.STYLES_DIR / name
+
+    @classmethod
+    def optimized_path(cls, path: str) -> Path:
+        """it will make the path optimized"""
+        if not path:
+            pass
+        path_object = Path(path)
+        optimized_path = path_object.resolve()
+        return optimized_path
