@@ -1,5 +1,6 @@
 from pathlib import Path
 from PySide6.QtGui import QFont, QFontDatabase
+from PersianPad.shared.fonts import Fonts
 
 class FontLoader:
     def __init__(self):
@@ -20,7 +21,7 @@ class FontLoader:
             raise Exception(f'{font_name} not exist please add it to resources\fonts folder')
         return path
 
-    def load_font(self, font_name: str, size: int = 12) -> QFont:
+    def load_font(self, font_name: Fonts, size: int = 12) -> QFont:
         """
         this method will use for returning the fonts as QFont object
         :param font_name:

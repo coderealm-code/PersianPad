@@ -1,8 +1,8 @@
 import sys
 from PersianPad.shared.metrics import FileManagerMetrics
-from PySide6.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QHBoxLayout, QVBoxLayout, QFrame
+from PySide6.QtWidgets import QWidget, QApplication, QLabel, QHBoxLayout, QVBoxLayout, QFrame
 from PySide6.QtCore import Qt, Signal
-from PersianPad.widgets.vertical_button import VerticalButton
+from PersianPad.widgets.RibbonButton.vertical_button import VerticalButton
 
 
 class FileManager(QWidget):

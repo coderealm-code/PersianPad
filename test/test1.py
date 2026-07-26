@@ -1,9 +1,7 @@
 import sys
 
 from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout
-from PySide6.QtCore import QSize
-from PySide6.QtGui import QIcon, QFont
-from PersianPad.widgets.vertical_button import VerticalButton
+from PersianPad.widgets.RibbonButton.vertical_button import VerticalButton
 
 
 class Window(QWidget):

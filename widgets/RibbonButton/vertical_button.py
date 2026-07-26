@@ -1,0 +1,80 @@
+import sys
+from PySide6.QtWidgets import QWidget, QApplication, QStyle
+from PySide6.QtCore import Qt, QSize, QRect
+from PySide6.QtGui import QPixmap, QPainter, QFont, QColor, QMouseEvent
+from PersianPad.core.font_loader import FontLoader
+from PersianPad.shared.fonts import Fonts
+from PersianPad.core.path_handler import PathHandler
+from PersianPad.widgets.RibbonButton.metrics import RibbonButtonMetrics
+
+class VerticalButton(QWidget):
+    def __init__(self, text: str, icon_name: str, font: Fonts, parent=None):
+        super().__init__(parent)
+        self.setMouseTracking(True)
+        self.setMinimumSize(RibbonButtonMetrics.width, RibbonButtonMetrics.height)
+        self.font_loader: FontLoader = FontLoader()
+        self.text: str = text
+        self.font: QFont = self.font_loader.load_font(font)
+        self.pixmap: QPixmap = QPixmap(PathHandler.icon(icon_name))
+        self.scaled_pixmap: QPixmap = self.pixmap.scaled(QSize(32, 32), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+        #-------- states -------------
+        self._hover: bool = False
+        self._pressed: bool = False
+
+    def paintEvent(self, event) -> None:
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        #----------- BackGround ----------------
+        button_area = QRect(0, 0, self.width(), self.height())
+        if self._hover:
+            painter.setPen(Qt.NoPen)
+            painter.setBrush(QColor("#e0e0e0"))
+            painter.drawRoundedRect(button_area, RibbonButtonMetrics.size_10, RibbonButtonMetrics.size_10)
+        if self._pressed:
+            painter.setPen(Qt.NoPen)
+            painter.setBrush(QColor("#ebebeb"))
+            painter.drawRoundedRect(button_area, RibbonButtonMetrics.size_10, RibbonButtonMetrics.size_10)
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QColor("transparent"))
+        painter.drawRoundedRect(button_area, RibbonButtonMetrics.size_10, RibbonButtonMetrics.size_10)
+
+        #----------- set Icon --------------
+        painter.setPen(QColor("#ffcccc"))
+        painter.setBrush(Qt.NoBrush)
+        pixmap_rect = QStyle.alignedRect(Qt.LayoutDirection.LeftToRight,
+                                         Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
+                                         self.scaled_pixmap.size(), button_area)
+        painter.drawPixmap(pixmap_rect.topLeft(), self.scaled_pixmap)
+
+        #------------- set Text ------------------
+        text_area = QRect(0, pixmap_rect.bottom() + 10, self.width(), RibbonButtonMetrics.size_24)
+        painter.setFont(self.font.family())
+        painter.setPen(QColor("black"))
+        painter.drawText(text_area, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter, self.text)
+
+    def mousePressEvent(self, event: QMouseEvent):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._pressed = True
+            self.update()
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._pressed = False
+            self.update()
+
+    def enterEvent(self, event: QMouseEvent):
+        self._hover = True
+        self.update()
+
+    def leaveEvent(self, event: QMouseEvent):
+        self._hover = False
+        self.update()
+
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = VerticalButton(icon_name="copy.png", text="copy", font=Fonts.FONT_VAZIR)
+    window.show()
+    sys.exit(app.exec())

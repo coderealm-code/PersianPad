@@ -1,23 +1,31 @@
 import sys
+from pathlib import Path
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QApplication, QHBoxLayout, QFrame, QGroupBox
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QPixmap, QIcon, QMouseEvent
 
 
-class RecentFileItem(QWidget):
-    def __init__(self, path: str, name: str, icon: QPixmap | None = None,  parent=None) -> None:
+class RecentFileItem(QFrame):
+    request_open_file = Signal(str)
+    def __init__(self, path: Path, name: str, icon: QPixmap | None = None,  parent=None) -> None:
         super().__init__(parent)
         self.name = name
         self.path = path
+        self.setStyleSheet("""QFrame#recentFileItem {
+                                                        background-color: transparent;
+                                                        border: none;
+                                                        border-radius: 10px;
+                                                        padding: 20 5px;
+                                                    }""")
+        self.setMinimumSize(250, 30)
 
         self.setObjectName("recentFileItem")
         self.setLayoutDirection(Qt.RightToLeft)
-        self.setAutoFillBackground(True)
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(10)
 
-        path_lbl: QLabel = QLabel(self.path)
+        path_lbl: QLabel = QLabel(str(self.path))
         name_lbl: QLabel = QLabel(self.name)
         icon_lbl: QLabel = QLabel()
         if icon:
@@ -29,22 +37,35 @@ class RecentFileItem(QWidget):
         main_layout.addWidget(path_lbl)
         self.setLayout(main_layout)
 
-    def mousePressEvent(self, event: QMouseEvent) -> None:
+
+    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
         pos = event.position().toPoint()
         if event.button() == Qt.MouseButton.LeftButton:
             print(f"left click in {pos.x()}, {pos.y()}")
-        elif event.button() == Qt.MouseButton.RightButton:
-            print(f"right click in {pos.x()}, {pos.y()}")
+            self.request_open_file.emit(str(self.path))
         super().mousePressEvent(event)
         return None
 
+
     def enterEvent(self, event: QMouseEvent) -> None:
         self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setStyleSheet("""QFrame#recentFileItem {
+                                                    background-color: #b8b8b8;
+                                                    border: none;
+                                                    border-radius: 10px;
+                                                    padding: 20 5px;
+                                                     }""")
         super().enterEvent(event)
         return None
 
     def leaveEvent(self, event: QMouseEvent) -> None:
         self.setCursor(Qt.CursorShape.ArrowCursor)
+        self.setStyleSheet("""QFrame#recentFileItem {
+                                                            background-color: transparent;
+                                                            border: none;
+                                                            border-radius: 10px;
+                                                            padding: 20 5px;
+                                                             }""")
         super().leaveEvent(event)
         return None
 
@@ -57,6 +78,7 @@ class RecentFilesContainer(QFrame):
         self.setLayoutDirection(Qt.RightToLeft)
         self.setStyleSheet("""QFrame {border: 1px solid #bdbdbd; border-radius: 10px;}
                                QLabel {border: none;}""")
+        self.setMinimumSize(300, 150)
 
         self.list_item = list(list_item)
         self.container_layout = QVBoxLayout()
