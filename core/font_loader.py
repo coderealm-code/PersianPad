@@ -8,7 +8,7 @@ class FontLoader:
 
     def get_font_path(self, font_name: str) -> Path:
         """
-        this method is used to get the font path from specific folder and return its path
+        this method is used to get the font_name path from specific folder and return its path
         :param font_name:
         """
         if not (font_name.endswith('.ttf') or not font_name.endswith('.otf')):
@@ -21,7 +21,7 @@ class FontLoader:
             raise Exception(f'{font_name} not exist please add it to resources\fonts folder')
         return path
 
-    def load_font(self, font_name: Fonts, size: int = 12) -> QFont:
+    def load_font(self, font_name: str, size: int = 10) -> QFont:
         """
         this method will use for returning the fonts as QFont object
         :param font_name:

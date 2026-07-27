@@ -41,5 +41,16 @@ class FileManagerMetrics:
     label_width: int = 576
 
 
+@dataclass
+class TextSettingsMetrics:
+    """Metrics for the text setting widget"""
+    width: int = MainWindowMetrics.width
+    height: int = MainWindowMetrics.height * (30 // 100)
 
 
+class ClipboardMetrics:
+    """Metrics for the clipboard widget"""
+    height: int = TextSettingsMetrics.height
+    width: int = 200
+    btn_width: int = 50
+    btn_height: int = 80
