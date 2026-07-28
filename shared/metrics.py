@@ -40,7 +40,7 @@ class FileManagerMetrics:
     label_height: int = 30
     label_width: int = 576
 
-
+#==============================================
 @dataclass
 class TextSettingsMetrics:
     """Metrics for the text setting widget"""
@@ -52,5 +52,14 @@ class ClipboardMetrics:
     """Metrics for the clipboard widget"""
     height: int = TextSettingsMetrics.height
     width: int = 200
+    btn_width: int = 50
+    btn_height: int = 80
+
+
+@dataclass
+class FindReplaceMetrics:
+    """Metrics for the find replace widget"""
+    height: int = TextSettingsMetrics.height
+    width: int = 120
     btn_width: int = 50
     btn_height: int = 80

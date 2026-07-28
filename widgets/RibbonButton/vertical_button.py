@@ -28,6 +28,7 @@ class VerticalButton(QWidget):
     def paintEvent(self, event) -> None:
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform, True)
         #----------- BackGround ----------------
         button_area = QRect(0, 10, self.width(), self.height() - 10)
         if self._pressed:

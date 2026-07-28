@@ -13,13 +13,12 @@ class ClipBoardWidget(QFrame):
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self.resize(ClipboardMetrics.width, ClipboardMetrics.height)
+        self.setMinimumSize(ClipboardMetrics.width, ClipboardMetrics.height)
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.main_layout: QVBoxLayout = QVBoxLayout()
 
         self.groupBox: QGroupBox = QGroupBox(self, title="کلیپ بورد")
         self.groupBox.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.groupBox.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.group_layout = QHBoxLayout(self.groupBox)
         self.group_layout.setContentsMargins(0,0,0,0)
         self.group_layout.setSpacing(0)

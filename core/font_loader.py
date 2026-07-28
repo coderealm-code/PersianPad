@@ -21,7 +21,7 @@ class FontLoader:
             raise Exception(f'{font_name} not exist please add it to resources\fonts folder')
         return path
 
-    def load_font(self, font_name: str, size: int = 10) -> QFont:
+    def load_font(self, font_name: str, size: int = 8) -> QFont:
         """
         this method will use for returning the fonts as QFont object
         :param font_name:
