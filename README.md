@@ -39,20 +39,6 @@
 * Python 3.10 یا بالاتر
 * PySide6
 
-نصب وابستگی‌ها:
-
-```bash
-pip install -r requirements.txt
-```
-
-اجرای برنامه:
-
-```bash
-python main.py
-```
-
----
-
 ## هدف نسخه جدید
 
 در نسخه جدید تمرکز اصلی بر موارد زیر است:
