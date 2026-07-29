@@ -63,3 +63,4 @@ class FindReplaceMetrics:
     width: int = 120
     btn_width: int = 50
     btn_height: int = 80
+

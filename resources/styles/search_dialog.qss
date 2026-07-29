@@ -1,0 +1,114 @@
+QWidget#search_dialog {
+    background-color: #fafeff;
+    border-radius: 10px;
+    border: 1px solid #d1d1d1;
+}
+
+
+QFrame#title_bar {
+    background-color: transparent;
+    border: 1px solid #d1d1d1;
+    border-radius: 0;
+}
+
+QLabel#title_label {
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+QPushButton#close_button {
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+}
+
+QPushButton#close_button:hover {
+    background-color: #ff2e2e;
+    border-radius: 0;
+    border: none;
+}
+
+QCheckBox#whole_word_chx {
+    border: 1px solid #d1d1d1;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding: 5px;
+}
+
+QCheckBox#case_sensitivity {
+    border: 1px solid #d1d1d1;
+    border-radius: 0px;
+    border-top: none;
+    padding: 5px;
+}
+
+QCheckBox#regex_chx {
+    border: 1px solid #d1d1d1;
+    border-radius: 0px;
+    border-bottom: none;
+    border-top: none;
+    padding: 5px;
+}
+
+QCheckBox#search_from_start_chx {
+    border: 1px solid #d1d1d1;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 5px;
+}
+
+QFrame#buttons_frame {
+    background-color: transparent;
+    border: 1px solid #d1d1d1;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+QPushButton#next_button {
+    background-color: transparent;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    color: black;
+}
+
+QPushButton#next_button:hover {
+    background-color: #267bfa;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    color: black;
+}
+
+QPushButton#prev_button {
+    background-color: transparent;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    color: black;
+}
+
+QPushButton#prev_button:hover {
+    background-color: #267bfa;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    color: black;
+}
+
+QPushButton#search_btn {
+    background-color: transparent;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    color: black;
+}
+
+QPushButton#search_btn:hover {
+    background-color: #267bfa;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    color: black;
+}
