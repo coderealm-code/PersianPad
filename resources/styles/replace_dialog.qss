@@ -76,42 +76,42 @@ QFrame#buttons_frame {
     overflow: hidden;
 }
 
-QPushButton#next_button {
+QPushButton#replace_all_button {
     background-color: transparent;
     border: 1px solid #d1d1d1;
     border-radius: 8px;
     color: black;
 }
 
-QPushButton#next_button:hover {
+QPushButton#replace_all_button:hover {
     background-color: #267bfa;
     border: 1px solid #d1d1d1;
     border-radius: 8px;
     color: black;
 }
 
-QPushButton#next_button:pressed {
+QPushButton#replace_all_button:pressed {
     background-color: #3b89ff;
     border: none;
     border-radius: 8px;
     color: black;
 }
 
-QPushButton#prev_button {
+QPushButton#replace_button {
     background-color: transparent;
     border: 1px solid #d1d1d1;
     border-radius: 8px;
     color: black;
 }
 
-QPushButton#prev_button:hover {
+QPushButton#replace_button:hover {
     background-color: #267bfa;
     border: 1px solid #d1d1d1;
     border-radius: 8px;
     color: black;
 }
 
-QPushButton#prev_button:pressed {
+QPushButton#replace_button:pressed {
     background-color: #3b89ff;
     border: none;
     border-radius: 8px;

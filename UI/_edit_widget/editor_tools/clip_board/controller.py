@@ -1,6 +1,6 @@
-from PersianPad.UI._edit_widget.text_setting_widget.clip_board.service import ClipBoardService
+from PersianPad.UI._edit_widget.editor_tools.clip_board.service import ClipBoardService
 from PySide6.QtCore import QObject, Signal
-from PersianPad.UI._edit_widget.text_setting_widget.clip_board.clip_board import ClipBoardWidget
+from PersianPad.UI._edit_widget.editor_tools.clip_board.clip_board import ClipBoardWidget
 
 
 class ClipBoardController(QObject):

@@ -3,25 +3,24 @@ from PySide6.QtWidgets import QWidget, QLineEdit, QCheckBox, QLabel, QPushButton
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QApplication
 from PySide6.QtCore import Qt, Signal, QSize
 from PySide6.QtGui import QPixmap
-from PersianPad.widgets.dialogs.search_dialog.search_dialog_metrics import SearchDialogMetrics, BodyMetric, Spacer
+from PersianPad.widgets.dialogs.replace_dialog.replace_metrics import ReplaceDialogMetrics, Spacer, BodyMetric
 from PersianPad.core.icon_maker import IconMaker
 from PersianPad.core.font_loader import FontLoader
 from PersianPad.core.qss_loader import QssLoader
 from PersianPad.shared.fonts import Fonts
 
 
-class SearchDialog(QWidget):
+class ReplaceDialog(QWidget):
+    request_replace_all: Signal = Signal()
+    request_replace: Signal = Signal()
     request_search: Signal = Signal(str)
-    request_next: Signal = Signal()
-    request_prev: Signal = Signal()
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.setFixedSize(SearchDialogMetrics.width, SearchDialogMetrics.height)
+        self.setFixedSize(ReplaceDialogMetrics.width, ReplaceDialogMetrics.height)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-        self.setObjectName("search_dialog")
-        self.setStyleSheet(QssLoader.load_qss("search_dialog.qss"))
+        self.setObjectName("replace_dialog")
+        self.setStyleSheet(QssLoader.load_qss("replace_dialog.qss"))
         self.setAutoFillBackground(True)
 
         self.font_loader = FontLoader()
@@ -46,7 +45,7 @@ class SearchDialog(QWidget):
         main_layout.setContentsMargins(0, 0, 10, 0)
         main_layout.setSpacing(10)
 
-        pic: QPixmap = IconMaker.icon(name="search.png", size=QSize(24, 24))
+        pic: QPixmap = IconMaker.icon(name="replace.png", size=QSize(24, 24))
         pic_label: QLabel = QLabel(parent=title_bar_frame)
         pic_label.setObjectName("pic_label")
         pic_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -71,6 +70,7 @@ class SearchDialog(QWidget):
         title_bar_frame.setLayout(main_layout)
         return title_bar_frame
 
+
     def body_part(self) -> QFrame:
         body_frame: QFrame = QFrame(parent=self)
         body_frame.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
@@ -84,8 +84,14 @@ class SearchDialog(QWidget):
         self.search_entry: QLineEdit = QLineEdit(parent=body_frame)
         self.search_entry.setFixedSize(BodyMetric.line_edit_width, BodyMetric.line_edit_height)
         self.search_entry.setObjectName("search_entry")
-        self.search_entry.setPlaceholderText("متن مورد نظر...")
+        self.search_entry.setPlaceholderText("متن جستجو...")
         self.search_entry.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+
+        self.replace_entry: QLineEdit = QLineEdit(parent=body_frame)
+        self.replace_entry.setFixedSize(BodyMetric.line_edit_width, BodyMetric.line_edit_height)
+        self.replace_entry.setObjectName("replace_entry")
+        self.replace_entry.setPlaceholderText("متن جایگزین...")
+        self.replace_entry.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
         whole_word_chx: QCheckBox = QCheckBox(parent=body_frame, text="فقط کلمه کامل")
         case_sensitivity_chx: QCheckBox = QCheckBox(parent=body_frame, text="حساس به کوچک و بزرگی حروف")
@@ -102,6 +108,8 @@ class SearchDialog(QWidget):
         main_layout.addStretch(1)
         main_layout.addWidget(self.search_entry)
         main_layout.addStretch(1)
+        main_layout.addWidget(self.replace_entry)
+        main_layout.addStretch(1)
         main_layout.addWidget(whole_word_chx)
         main_layout.addWidget(case_sensitivity_chx)
         main_layout.addWidget(regex_chx)
@@ -110,23 +118,24 @@ class SearchDialog(QWidget):
         body_frame.setLayout(main_layout)
         return body_frame
 
+
     def buttons_part(self) -> QFrame:
         buttons_frame: QFrame = QFrame(parent=self)
         buttons_frame.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         buttons_frame.setObjectName("buttons_frame")
-        buttons_frame.setFixedSize(SearchDialogMetrics.width, 48)
+        buttons_frame.setFixedSize(ReplaceDialogMetrics.width, 48)
 
         main_layout: QHBoxLayout = QHBoxLayout(buttons_frame)
         main_layout.setContentsMargins(10, 0, 10, 0)
         main_layout.setSpacing(5)
 
-        next_button: QPushButton = QPushButton(text="بعدی" ,parent=buttons_frame)
-        prev_button: QPushButton = QPushButton(parent=buttons_frame, text="قبلی")
+        replace_all_button: QPushButton = QPushButton(text="جایگزین همه" ,parent=buttons_frame)
+        replace_button: QPushButton = QPushButton(parent=buttons_frame, text="جایگزینی")
         search_btn : QPushButton = QPushButton(parent=buttons_frame,text="جستجو")
 
-        btn_list: list = [next_button, prev_button, search_btn]
-        obj_names: list = ["next_button", "prev_button", "search_btn"]
-        func_list: list = [self.request_next.emit, self.request_prev.emit, self.search]
+        btn_list: list = [replace_all_button, replace_button, search_btn]
+        obj_names: list = ["replace_all_button", "replace_button", "search_btn"]
+        func_list: list = [self.request_replace_all.emit, self.request_replace.emit, self.search]
         for btn, obj, func in zip(btn_list, obj_names, func_list):
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.setObjectName(obj)
@@ -135,13 +144,12 @@ class SearchDialog(QWidget):
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.clicked.connect(func)
 
-        main_layout.addWidget(next_button)
-        main_layout.addWidget(prev_button)
+        main_layout.addWidget(replace_all_button)
+        main_layout.addWidget(replace_button)
         main_layout.addStretch()
         main_layout.addWidget(search_btn)
         buttons_frame.setLayout(main_layout)
         return buttons_frame
-
 
     def search(self) -> None:
         text = self.search_entry.text()
@@ -151,8 +159,10 @@ class SearchDialog(QWidget):
         return None
 
 
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = SearchDialog()
+    window = ReplaceDialog()
     window.show()
     sys.exit(app.exec())
