@@ -1,8 +1,8 @@
 import sys
 from PySide6.QtWidgets import QWidget, QLineEdit, QCheckBox, QLabel, QPushButton
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QApplication
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QApplication, QDialog
 from PySide6.QtCore import Qt, Signal, QSize
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QMouseEvent
 from PersianPad.widgets.dialogs.search_dialog.search_dialog_metrics import SearchDialogMetrics, BodyMetric, Spacer
 from PersianPad.core.icon_maker import IconMaker
 from PersianPad.core.font_loader import FontLoader
@@ -10,7 +10,7 @@ from PersianPad.core.qss_loader import QssLoader
 from PersianPad.shared.fonts import Fonts
 
 
-class SearchDialog(QWidget):
+class SearchDialog(QDialog):
     request_search: Signal = Signal(str)
     request_next: Signal = Signal()
     request_prev: Signal = Signal()
@@ -25,6 +25,7 @@ class SearchDialog(QWidget):
         self.setAutoFillBackground(True)
 
         self.font_loader = FontLoader()
+        self._drag_pos = None
 
         self.main_layout: QVBoxLayout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
@@ -149,6 +150,19 @@ class SearchDialog(QWidget):
             return None
         self.request_search.emit(text)
         return None
+
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._drag_pos = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
+            event.accept()
+
+    def mouseMoveEvent(self, event: QMouseEvent) -> None:
+        if self._drag_pos and event.buttons() & Qt.MouseButton.LeftButton:
+            self.move(event.globalPosition().toPoint() - self._drag_pos)
+            event.accept()
+
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
+        self._drag_pos = None
 
 
 if __name__ == "__main__":

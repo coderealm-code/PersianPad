@@ -15,12 +15,12 @@ class FindReplaceText(QFrame):
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.setMinimumHeight(FindReplaceMetrics.height)
 
-        main_layout: QVBoxLayout = QVBoxLayout()
+        main_layout: QVBoxLayout = QVBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
 
         groupBox: QGroupBox = QGroupBox("جستجو و جایگزین")
-        group_layout: QHBoxLayout = QHBoxLayout()
+        group_layout: QHBoxLayout = QHBoxLayout(groupBox)
         groupBox.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         group_layout.setContentsMargins(0, 0, 0, 0)
         group_layout.setSpacing(10)
@@ -36,10 +36,8 @@ class FindReplaceText(QFrame):
 
         group_layout.addWidget(self.search_btn)
         group_layout.addWidget(self.replace_btn)
-        groupBox.setLayout(group_layout)
 
         main_layout.addWidget(groupBox)
-        self.setLayout(main_layout)
 
 
 if __name__ == "__main__":

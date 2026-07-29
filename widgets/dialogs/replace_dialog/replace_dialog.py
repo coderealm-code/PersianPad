@@ -1,8 +1,8 @@
 import sys
 from PySide6.QtWidgets import QWidget, QLineEdit, QCheckBox, QLabel, QPushButton
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QApplication
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QApplication, QDialog
 from PySide6.QtCore import Qt, Signal, QSize
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QMouseEvent
 from PersianPad.widgets.dialogs.replace_dialog.replace_metrics import ReplaceDialogMetrics, Spacer, BodyMetric
 from PersianPad.core.icon_maker import IconMaker
 from PersianPad.core.font_loader import FontLoader
@@ -10,10 +10,11 @@ from PersianPad.core.qss_loader import QssLoader
 from PersianPad.shared.fonts import Fonts
 
 
-class ReplaceDialog(QWidget):
-    request_replace_all: Signal = Signal()
-    request_replace: Signal = Signal()
+class ReplaceDialog(QDialog):
+    request_replace_all: Signal = Signal(str)
+    request_replace: Signal = Signal(str)
     request_search: Signal = Signal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
@@ -24,6 +25,7 @@ class ReplaceDialog(QWidget):
         self.setAutoFillBackground(True)
 
         self.font_loader = FontLoader()
+        self._drag_pos = None
 
         self.main_layout: QVBoxLayout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
@@ -135,7 +137,9 @@ class ReplaceDialog(QWidget):
 
         btn_list: list = [replace_all_button, replace_button, search_btn]
         obj_names: list = ["replace_all_button", "replace_button", "search_btn"]
-        func_list: list = [self.request_replace_all.emit, self.request_replace.emit, self.search]
+        func_list: list = [lambda: self.request_replace_all.emit(self.replace_entry.text()),
+                           lambda: self.request_replace.emit(self.replace_entry.text()),
+                           self.search]
         for btn, obj, func in zip(btn_list, obj_names, func_list):
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.setObjectName(obj)
@@ -158,7 +162,18 @@ class ReplaceDialog(QWidget):
         self.request_search.emit(text)
         return None
 
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._drag_pos = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
+            event.accept()
 
+    def mouseMoveEvent(self, event: QMouseEvent) -> None:
+        if self._drag_pos and event.buttons() & Qt.MouseButton.LeftButton:
+            self.move(event.globalPosition().toPoint() - self._drag_pos)
+            event.accept()
+
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
+        self._drag_pos = None
 
 
 if __name__ == "__main__":
