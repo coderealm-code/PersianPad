@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from PySide6.QtCore import QSize
 
 
 @dataclass
@@ -25,7 +26,7 @@ class NavigationBarMetrics:
 class ContainerWidgetMetrics:
     """Metrics for the container widget"""
     width: int = MainWindowMetrics.width
-    height: int = (30 / 100) * MainWindowMetrics.height # 30% OF THE WINDOW = 216 IN HERE
+    height: int = 0.3 * MainWindowMetrics.height # 30% OF THE WINDOW = 216 IN HERE
 
 
 @dataclass
@@ -45,7 +46,7 @@ class FileManagerMetrics:
 class TextSettingsMetrics:
     """Metrics for the text setting widget"""
     width: int = MainWindowMetrics.width
-    height: int = MainWindowMetrics.height * (30 // 100)
+    height: int = MainWindowMetrics.height * 0.3
 
 
 class ClipboardMetrics:
@@ -64,3 +65,24 @@ class FindReplaceMetrics:
     btn_width: int = 50
     btn_height: int = 80
 
+
+@dataclass
+class TextJustifyMetrics:
+    """Metrics for the text justify widget"""
+    size: QSize = QSize(280, TextSettingsMetrics.height)
+    btn_size: QSize = QSize(50, 80)
+
+
+@dataclass
+class FontSettingMetrics:
+    """Metrics for the text font setting widget"""
+    size: QSize = QSize(280, TextSettingsMetrics.height)
+    btn_size: QSize = QSize(50, 80)
+
+#==================================================================
+@dataclass
+class EditorMetrics:
+    """Metrics for the edit widget"""
+    A3: QSize = QSize(297, 420)
+    A4: QSize = QSize(210, 297)
+    A5: QSize = QSize(148, 210)

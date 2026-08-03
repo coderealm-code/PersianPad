@@ -10,12 +10,13 @@ from PersianPad.core.qss_loader import QssLoader
 from PersianPad.shared.fonts import Fonts
 
 
-class SearchDialog(QDialog):
-    request_search: Signal = Signal(str)
+class SearchDialog(QWidget):
+    request_search: Signal = Signal(dict)
     request_next: Signal = Signal()
     request_prev: Signal = Signal()
 
-    def __init__(self, parent=None):
+
+    def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.setFixedSize(SearchDialogMetrics.width, SearchDialogMetrics.height)
@@ -88,12 +89,12 @@ class SearchDialog(QDialog):
         self.search_entry.setPlaceholderText("متن مورد نظر...")
         self.search_entry.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
-        whole_word_chx: QCheckBox = QCheckBox(parent=body_frame, text="فقط کلمه کامل")
-        case_sensitivity_chx: QCheckBox = QCheckBox(parent=body_frame, text="حساس به کوچک و بزرگی حروف")
-        regex_chx: QCheckBox = QCheckBox(parent=body_frame, text="استفاده از عبارت منظم")
-        search_from_start_chx: QCheckBox = QCheckBox(parent=body_frame, text="جستجو از ابتدا")
+        self.whole_word_chx: QCheckBox = QCheckBox(parent=body_frame, text="فقط کلمه کامل")
+        self.case_sensitivity_chx: QCheckBox = QCheckBox(parent=body_frame, text="حساس به کوچک و بزرگی حروف")
+        self.regex_chx: QCheckBox = QCheckBox(parent=body_frame, text="استفاده از عبارت منظم")
+        self.search_from_start_chx: QCheckBox = QCheckBox(parent=body_frame, text="جستجو از ابتدا")
 
-        chx_list: list = [whole_word_chx, case_sensitivity_chx, regex_chx, search_from_start_chx]
+        chx_list: list = [self.whole_word_chx, self.case_sensitivity_chx, self.regex_chx, self.search_from_start_chx]
         obj_names:list = ["whole_word_chx", "case_sensitivity", "regex_chx", "search_from_start_chx"]
         for chx, obj in zip(chx_list, obj_names):
             chx.setObjectName(obj)
@@ -103,10 +104,10 @@ class SearchDialog(QDialog):
         main_layout.addStretch(1)
         main_layout.addWidget(self.search_entry)
         main_layout.addStretch(1)
-        main_layout.addWidget(whole_word_chx)
-        main_layout.addWidget(case_sensitivity_chx)
-        main_layout.addWidget(regex_chx)
-        main_layout.addWidget(search_from_start_chx)
+        main_layout.addWidget(self.whole_word_chx)
+        main_layout.addWidget(self.case_sensitivity_chx)
+        main_layout.addWidget(self.regex_chx)
+        main_layout.addWidget(self.search_from_start_chx)
         main_layout.addStretch(3)
         body_frame.setLayout(main_layout)
         return body_frame
@@ -127,7 +128,7 @@ class SearchDialog(QDialog):
 
         btn_list: list = [next_button, prev_button, search_btn]
         obj_names: list = ["next_button", "prev_button", "search_btn"]
-        func_list: list = [self.request_next.emit, self.request_prev.emit, self.search]
+        func_list: list = [self.request_next.emit, self.request_prev.emit, lambda : self.request_search.emit(self.search)]
         for btn, obj, func in zip(btn_list, obj_names, func_list):
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.setObjectName(obj)
@@ -144,12 +145,13 @@ class SearchDialog(QDialog):
         return buttons_frame
 
 
-    def search(self) -> None:
-        text = self.search_entry.text()
-        if not text:
-            return None
-        self.request_search.emit(text)
-        return None
+    def search(self) -> dict:
+        return {"search_text" : self.search_entry.text(),
+                "replace_text": "",
+                "whole_word"  : self.whole_word_chx.isChecked(),
+                "match_case"  : self.case_sensitivity_chx.isChecked(),
+                "wrap_search" : self.search_from_start_chx.isChecked(),
+                "regex" : self.regex_chx.isChecked()}
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:

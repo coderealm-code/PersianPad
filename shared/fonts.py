@@ -20,3 +20,22 @@ class Fonts:
     FONT_YAGUT: str = "yagut.ttf"
     FONT_YEKAN: str = "Yekan.ttf"
     FONT_HADITH: str = "ZARGHAN HADITH.ttf"
+
+    def __iter__(self):
+        yield self.DEFAULT_FONT_NAME
+        yield self.FONT_VAZIR
+        yield self.FONT_CLASSIC
+        yield self.FONT_BESMELLAH
+        yield self.FONT_IRANNASTALIQ
+        yield self.FONT_FARKHODKAR
+        yield self.FONT_KHAT_KHATI
+        yield self.FONT_KIDNAP
+        yield self.FONT_LALEZR
+        yield self.FONT_MITRA
+        yield self.FONT_NAZANIN
+        yield self.FONT_ORDIBEHESHT
+        yield self.FONT_KARESHME
+        yield self.FONT_REZVAN
+        yield self.FONT_YAGUT
+        yield self.FONT_YEKAN
+        yield self.FONT_HADITH

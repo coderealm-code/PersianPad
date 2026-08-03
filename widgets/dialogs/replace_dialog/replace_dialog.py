@@ -10,12 +10,12 @@ from PersianPad.core.qss_loader import QssLoader
 from PersianPad.shared.fonts import Fonts
 
 
-class ReplaceDialog(QDialog):
-    request_replace_all: Signal = Signal(str)
-    request_replace: Signal = Signal(str)
-    request_search: Signal = Signal(str)
+class ReplaceDialog(QWidget):
+    request_replace_all: Signal = Signal(dict)
+    request_replace: Signal = Signal(dict)
+    request_search: Signal = Signal(dict)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.setFixedSize(ReplaceDialogMetrics.width, ReplaceDialogMetrics.height)
@@ -95,13 +95,13 @@ class ReplaceDialog(QDialog):
         self.replace_entry.setPlaceholderText("متن جایگزین...")
         self.replace_entry.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
 
-        whole_word_chx: QCheckBox = QCheckBox(parent=body_frame, text="فقط کلمه کامل")
-        case_sensitivity_chx: QCheckBox = QCheckBox(parent=body_frame, text="حساس به کوچک و بزرگی حروف")
-        regex_chx: QCheckBox = QCheckBox(parent=body_frame, text="استفاده از عبارت منظم")
-        search_from_start_chx: QCheckBox = QCheckBox(parent=body_frame, text="جستجو از ابتدا")
+        self.whole_word_chx: QCheckBox = QCheckBox(parent=body_frame, text="فقط کلمه کامل")
+        self.case_sensitivity_chx: QCheckBox = QCheckBox(parent=body_frame, text="حساس به کوچک و بزرگی حروف")
+        self.regex_chx: QCheckBox = QCheckBox(parent=body_frame, text="استفاده از عبارت منظم")
+        self.search_from_start_chx: QCheckBox = QCheckBox(parent=body_frame, text="جستجو از ابتدا")
 
-        chx_list: list = [whole_word_chx, case_sensitivity_chx, regex_chx, search_from_start_chx]
-        obj_names:list = ["whole_word_chx", "case_sensitivity", "regex_chx", "search_from_start_chx"]
+        chx_list: list = [self.whole_word_chx, self.case_sensitivity_chx, self.regex_chx, self.search_from_start_chx]
+        obj_names: list = ["whole_word_chx", "case_sensitivity", "regex_chx", "search_from_start_chx"]
         for chx, obj in zip(chx_list, obj_names):
             chx.setObjectName(obj)
             chx.setFont(self.font_loader.load_font(Fonts.DEFAULT_FONT_NAME))
@@ -112,10 +112,10 @@ class ReplaceDialog(QDialog):
         main_layout.addStretch(1)
         main_layout.addWidget(self.replace_entry)
         main_layout.addStretch(1)
-        main_layout.addWidget(whole_word_chx)
-        main_layout.addWidget(case_sensitivity_chx)
-        main_layout.addWidget(regex_chx)
-        main_layout.addWidget(search_from_start_chx)
+        main_layout.addWidget(self.whole_word_chx)
+        main_layout.addWidget(self.case_sensitivity_chx)
+        main_layout.addWidget(self.regex_chx)
+        main_layout.addWidget(self.search_from_start_chx)
         main_layout.addStretch(3)
         body_frame.setLayout(main_layout)
         return body_frame
@@ -137,9 +137,9 @@ class ReplaceDialog(QDialog):
 
         btn_list: list = [replace_all_button, replace_button, search_btn]
         obj_names: list = ["replace_all_button", "replace_button", "search_btn"]
-        func_list: list = [lambda: self.request_replace_all.emit(self.replace_entry.text()),
-                           lambda: self.request_replace.emit(self.replace_entry.text()),
-                           self.search]
+        func_list: list = [lambda: self.request_replace_all.emit(self.get_search_data()),
+                           lambda: self.request_replace.emit(self.get_search_data()),
+                           lambda: self.request_search.emit(self.get_search_data())]
         for btn, obj, func in zip(btn_list, obj_names, func_list):
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.setObjectName(obj)
@@ -155,12 +155,15 @@ class ReplaceDialog(QDialog):
         buttons_frame.setLayout(main_layout)
         return buttons_frame
 
-    def search(self) -> None:
-        text = self.search_entry.text()
-        if not text:
-            return None
-        self.request_search.emit(text)
-        return None
+    def get_search_data(self) -> dict:
+        return {"search_text": self.search_entry.text(),
+                "replace_text": self.replace_entry.text(),
+                "whole_word": self.whole_word_chx.isChecked(),
+                "match_case": self.case_sensitivity_chx.isChecked(),
+                "wrap_search": self.search_from_start_chx.isChecked(),
+                "regex": self.regex_chx.isChecked()}
+
+
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
