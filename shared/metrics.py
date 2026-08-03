@@ -79,6 +79,13 @@ class FontSettingMetrics:
     size: QSize = QSize(280, TextSettingsMetrics.height)
     btn_size: QSize = QSize(50, 80)
 
+
+@dataclass
+class FontShapeMetrics:
+    """Metrics for the text font shape widget"""
+    size: QSize = QSize(210, TextSettingsMetrics.height)
+    combo_box_size: QSize = QSize(200, 40)
+
 #==================================================================
 @dataclass
 class EditorMetrics:
