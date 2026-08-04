@@ -1,4 +1,4 @@
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QTextCursor, QTextCharFormat
 from PySide6.QtWidgets import QTextEdit
 from PySide6.QtCore import QObject
 from PersianPad.core.font_loader import FontLoader
@@ -14,6 +14,7 @@ class FontShapeController(QObject):
         self.font_loader = FontLoader()
         self.current_font_family: str = Fonts.DEFAULT_FONT_NAME
         self.current_font_size: int = 12
+        self.current_font_format: QTextCharFormat = editor.currentCharFormat()
         self._connect_signals()
 
 
@@ -23,12 +24,15 @@ class FontShapeController(QObject):
 
 
     def apply_font(self) -> None:
-        font: QFont = QFont(self.current_font_family, self.current_font_size)
-        if font is not None:
-            self.editor.setFont(font)
+        cursor: QTextCursor = self.editor.textCursor()
+        format = QTextCharFormat()
+        format.setFontFamily(self.current_font_family)
+        format.setFontPointSize(self.current_font_size)
+        self.current_font_format = format
+        if cursor.hasSelection():
+            cursor.mergeCharFormat(self.current_font_format)
         else:
-            self.editor.setFont(self.font_loader.load_font(Fonts.DEFAULT_FONT_NAME))
-        return None
+            self.editor.mergeCurrentCharFormat(self.current_font_format)
 
 
     def get_font_size(self, size: int) -> None:
