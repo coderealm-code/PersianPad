@@ -128,7 +128,7 @@ class SearchDialog(QWidget):
 
         btn_list: list = [next_button, prev_button, search_btn]
         obj_names: list = ["next_button", "prev_button", "search_btn"]
-        func_list: list = [self.request_next.emit, self.request_prev.emit, lambda : self.request_search.emit(self.search)]
+        func_list: list = [self.request_next.emit, self.request_prev.emit, lambda : self.request_search.emit(self.search())]
         for btn, obj, func in zip(btn_list, obj_names, func_list):
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.setObjectName(obj)

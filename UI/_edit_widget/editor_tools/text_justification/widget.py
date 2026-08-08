@@ -21,7 +21,7 @@ class TextJustify(QFrame):
         self.setFixedHeight(TextJustifyMetrics.size.height())
 
         main_layout: QVBoxLayout = QVBoxLayout(self)
-        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setContentsMargins(0, 0, 5, 0)
         main_layout.setSpacing(0)
 
         groupBox: QGroupBox = QGroupBox("چینش پاراگراف")

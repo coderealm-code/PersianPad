@@ -13,10 +13,11 @@ class FindReplaceText(QFrame):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.setMinimumHeight(FindReplaceMetrics.height)
+        self.setFixedHeight(FindReplaceMetrics.height)
+        self.setMinimumWidth(FindReplaceMetrics.width)
 
         main_layout: QVBoxLayout = QVBoxLayout(self)
-        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setContentsMargins(0, 0, 5, 0)
         main_layout.setSpacing(0)
 
         groupBox: QGroupBox = QGroupBox("جستجو و جایگزین")

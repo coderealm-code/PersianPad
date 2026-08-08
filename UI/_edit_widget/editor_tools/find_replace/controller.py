@@ -2,14 +2,14 @@ from PySide6.QtGui import QTextDocument, QTextCursor
 from PySide6.QtWidgets import QTextEdit
 from PersianPad.widgets.dialogs.search_dialog.searchDialog import SearchDialog
 from PersianPad.widgets.dialogs.replace_dialog.replace_dialog import ReplaceDialog
-from PersianPad.UI._edit_widget.editor_tools.find_replace.find_replace_widget import FindReplaceText
+from PersianPad.UI._edit_widget.editor_tools.find_replace.widget import FindReplaceText
 from PersianPad.UI._edit_widget.editor_tools.find_replace.model import FindReplaceModel
 
 
 class FindReplaceController:
-    def __init__(self , find_replace: FindReplaceText, editor: QTextEdit, model: FindReplaceModel) -> None:
+    def __init__(self, widget: FindReplaceText, editor: QTextEdit, model: FindReplaceModel) -> None:
         self.editor: QTextEdit = editor
-        self.find_replace: FindReplaceText = find_replace
+        self.find_replace: FindReplaceText = widget
         self.model: FindReplaceModel = model
 
         self.search_dialog: SearchDialog = SearchDialog()
@@ -33,7 +33,7 @@ class FindReplaceController:
 
 
     def _build_find_flags(self) -> QTextDocument.FindFlag:
-        flags = QTextDocument.FindFlag()
+        flags:QTextDocument.FindFlag = QTextDocument.FindFlag(QTextDocument.FindFlag.FindBackward)
 
         if self.model.match_case:
             flags |= QTextDocument.FindFlag.FindCaseSensitively
@@ -99,6 +99,7 @@ class FindReplaceController:
         flags = self._build_find_flags()
         result = self.editor.find(self.model.search_text, flags)
         if result:
+            self.editor.setFocus()
             return True
 
         if self.model.wrap_search:

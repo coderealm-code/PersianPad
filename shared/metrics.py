@@ -26,7 +26,7 @@ class NavigationBarMetrics:
 class ContainerWidgetMetrics:
     """Metrics for the container widget"""
     width: int = MainWindowMetrics.width
-    height: int = 0.3 * MainWindowMetrics.height # 30% OF THE WINDOW = 216 IN HERE
+    height: int = 0.2 * MainWindowMetrics.height # 30% OF THE WINDOW = 216 IN HERE
 
 
 @dataclass
@@ -45,39 +45,40 @@ class FileManagerMetrics:
 @dataclass
 class TextSettingsMetrics:
     """Metrics for the text setting widget"""
-    width: int = MainWindowMetrics.width
-    height: int = MainWindowMetrics.height * 0.3
+    size: QSize = QSize(MainWindowMetrics.width, int(MainWindowMetrics.height * 0.2))
+    height: int = MainWindowMetrics.height * 0.2
+
 
 
 class ClipboardMetrics:
     """Metrics for the clipboard widget"""
     height: int = TextSettingsMetrics.height
-    width: int = 200
-    btn_width: int = 50
-    btn_height: int = 80
+    width: int = 160
+    btn_width: int = 45
+    btn_height: int = 75
 
 
 @dataclass
 class FindReplaceMetrics:
     """Metrics for the find replace widget"""
     height: int = TextSettingsMetrics.height
-    width: int = 120
-    btn_width: int = 50
-    btn_height: int = 80
+    width: int = 150
+    btn_width: int = 45
+    btn_height: int = 75
 
 
 @dataclass
 class TextJustifyMetrics:
     """Metrics for the text justify widget"""
     size: QSize = QSize(280, TextSettingsMetrics.height)
-    btn_size: QSize = QSize(50, 80)
+    btn_size: QSize = QSize(45, 75)
 
 
 @dataclass
 class FontSettingMetrics:
     """Metrics for the text font setting widget"""
     size: QSize = QSize(280, TextSettingsMetrics.height)
-    btn_size: QSize = QSize(50, 80)
+    btn_size: QSize = QSize(45, 75)
 
 
 @dataclass
