@@ -1,16 +1,16 @@
 from datetime import datetime
 from pathlib import Path
 from PySide6.QtWidgets import QFileDialog, QTextEdit, QMessageBox
-from PersianPad.UI._edit_widget.FilePage.FileManager.model import Model
+from PersianPad.UI._edit_widget.FilePage.FileManager.model import FileModel
 from PersianPad.core.path_handler import PathHandler
 from PySide6.QtPrintSupport import QPrinter
 
 
 class FileService:
     ALLOWED_EXTENSIONS: set = {".txt", ".pdf"}
-    def __init__(self, editor: QTextEdit):
+    def __init__(self, model: FileModel, editor: QTextEdit):
         self.editor = editor
-        self.model = Model()
+        self.model = model
 
         self.editor.textChanged.connect(self.mark_unsaved)
 
@@ -67,7 +67,7 @@ class FileService:
         with open(file_path, "r", encoding="utf-8") as file:
             text = file.read()
 
-        editor.setPlainText(text)
+        self.editor.setPlainText(text)
         self.model.file_name = file_path.name
         self.model.is_saved = True
         self.model.file_path = file_path
@@ -91,10 +91,11 @@ class FileService:
         if not file_path:
             return None
         file_path = PathHandler.optimized_path(file_path)
-        if file_path.name.endswith(".txt"):
+        if not file_path.name.endswith(".txt"):
             new_path = file_path.with_suffix(".txt")
-        with open(new_path, "w", encoding="utf-8") as file:
-            file.write(self.editor.toPlainText())
+        else:
+            new_path = file_path
+        self.write_file(new_path, self.editor.toPlainText())
 
         self.model.file_name = new_path.name
         self.model.is_saved = True
@@ -104,7 +105,7 @@ class FileService:
 
 
     def export_pdf(self) -> None:
-        file_path, _ = QFileDialog.getOpenFileName(None, "ذخیره به PDF", "",
+        file_path, _ = QFileDialog.getSaveFileName(None, "ذخیره به PDF", "",
                                                    "PDF Files (*.pdf);;All Files (*)")
         if not file_path:
             return None
@@ -115,13 +116,21 @@ class FileService:
 
         printer = QPrinter(QPrinter.PrinterMode.HighResolution)
         printer.setOutputFormat(QPrinter.OutputFormat.PdfFormat)
-        printer.setOutputFileName(new_path)
+        printer.setOutputFileName(str(new_path))
         self.editor.document().print_(printer)
-        QMessageBox.information(self, "موفق", f"PDF در مسیر {new_path}ذخیره شد ")
+        QMessageBox.information(self.editor, "موفق", f"PDF در مسیر {new_path}ذخیره شد ")
         return None
 
-    def read_file(self):
-        pass
 
-    def write_file(self):
-        pass
+    @staticmethod
+    def read_file(path: Path) -> str:
+        with open(path, "r", encoding="utf-8") as file:
+            text = file.read()
+        return text
+
+
+    @staticmethod
+    def write_file(path: Path, text: str) -> None:
+        with open(path, "w", encoding="utf-8") as file:
+            file.write(text)
+        return None

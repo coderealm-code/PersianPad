@@ -1,46 +1,27 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
-    QApplication,
-    QWidget,
-    QGroupBox,
-    QVBoxLayout,
-    QPushButton
-)
 import sys
+from PySide6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QMainWindow, QTextEdit)
+from PersianPad.UI._edit_widget.FilePage.FileManager.file_manager import FileManager
+from PersianPad.UI._edit_widget.FilePage.FileManager.controller import FileController
 
-class Window(QWidget):
+
+class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        group = QGroupBox("تنظیمات فایل")
-        group.setLayoutDirection(Qt.RightToLeft)
+        self.setWindowTitle("Persian Pad")
+        self.editor = QTextEdit(self)
+        self.widget = FileManager(parent=self)
+        self.controller = FileController(editor=self.editor, widget=self.widget)
 
-        button1 = QPushButton("باز کردن")
-        button2 = QPushButton("ذخیره")
-
-        layout = QVBoxLayout()
-        layout.addWidget(button1)
-        layout.addWidget(button2)
-        group.setLayout(layout)
-
-        main_layout = QVBoxLayout()
-        main_layout.addWidget(group)
-
-        self.setLayout(main_layout)
-        self.setStyleSheet("""QGroupBox {
-    border: 1px solid #555;
-    border-radius: 8px;
-    margin-top: 12px;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 15px;
-    padding: 0 5px;
-}""")
+        self.main_layout = QVBoxLayout(self)
+        self.main_layout.addWidget(self.widget)
+        self.main_layout.addWidget(self.editor)
 
 
 
-app = QApplication(sys.argv)
-window = Window()
-window.show()
-sys.exit(app.exec())
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())

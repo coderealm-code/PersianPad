@@ -3,6 +3,7 @@ from PersianPad.shared.metrics import FileManagerMetrics
 from PySide6.QtWidgets import QWidget, QApplication, QLabel, QHBoxLayout, QVBoxLayout, QFrame
 from PySide6.QtCore import Qt, Signal
 from PersianPad.widgets.RibbonButton.vertical_button import VerticalButton
+from PersianPad.shared.fonts import Fonts
 
 
 class FileManager(QWidget):
@@ -16,7 +17,7 @@ class FileManager(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.setLayoutDirection(Qt.RightToLeft)
+        self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.setAutoFillBackground(True)
         self.setStyleSheet("background-color: #ffffff;")
 
@@ -37,11 +38,11 @@ class FileManager(QWidget):
         self.btn_layout.setContentsMargins(0 ,0 , 0, 0)
         self.btn_layout.setSpacing(10)
 
-        self.new_file = VerticalButton(text="جدید", icon="new.png")
-        self.open_file = VerticalButton(text="بازکردن", icon="open.png")
-        self.save_file = VerticalButton(text="ذخیره", icon="save.png")
-        self.save_as_file = VerticalButton(text="ذخیره با نام", icon="save_as.png")
-        self.export_pdf = VerticalButton(text="خروجی PDF", icon="pdf.png")
+        self.new_file = VerticalButton(text="جدید", icon_name="new.png", font_name=Fonts.DEFAULT_FONT_NAME)
+        self.open_file = VerticalButton(text="بازکردن", icon_name="open.png", font_name=Fonts.DEFAULT_FONT_NAME)
+        self.save_file = VerticalButton(text="ذخیره", icon_name="save.png", font_name=Fonts.DEFAULT_FONT_NAME)
+        self.save_as_file = VerticalButton(text="ذخیره با نام", icon_name="save_as.png", font_name=Fonts.DEFAULT_FONT_NAME)
+        self.export_pdf = VerticalButton(text="خروجی PDF", icon_name="pdf.png", font_name=Fonts.DEFAULT_FONT_NAME)
 
         btn_list = [self.new_file, self.open_file, self.save_file, self.save_as_file, self.export_pdf]
         func_list = [self.request_new_file.emit, self.request_open_file.emit,
@@ -51,7 +52,7 @@ class FileManager(QWidget):
         for btn, func, object in zip(btn_list, func_list, btn_object_name_list):
             btn.clicked.connect(func)
             btn.setObjectName(object)
-            btn.setCursor(Qt.PointingHandCursor)
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.setFixedSize(FileManagerMetrics.button_width, FileManagerMetrics.button_height)
 
             if btn == btn_list[-1]:
@@ -62,7 +63,7 @@ class FileManager(QWidget):
                 self.btn_layout.addStretch()
             self.btn_layout.addWidget(btn)
             self.btn_layout.addStretch()
-            self.btn_layout.addWidget(self.verical_line(120))
+            self.btn_layout.addWidget(self.vertical_line(120))
             self.btn_layout.addStretch()
 
         self.main_layout.addLayout(self.btn_layout)
@@ -70,10 +71,10 @@ class FileManager(QWidget):
         self.main_layout.addLayout(lbl_layout)
         self.setLayout(self.main_layout)
 
-    def verical_line(self, height: int) -> QFrame:
+    def vertical_line(self, height: int) -> QFrame:
         line = QFrame()
-        line.setFrameShape(QFrame.VLine)
-        line.setFrameShadow(QFrame.Sunken)
+        line.setFrameShape(QFrame.Shape.VLine)
+        line.setFrameShadow(QFrame.Shadow.Sunken)
         line.setFixedHeight(height)
         line.setStyleSheet("background-color: #e8e8e8;"
                            "border: none;")
