@@ -3,11 +3,11 @@ from PySide6.QtWidgets import QWidget, QLineEdit, QCheckBox, QLabel, QPushButton
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QApplication, QDialog
 from PySide6.QtCore import Qt, Signal, QSize
 from PySide6.QtGui import QPixmap, QMouseEvent
-from PersianPad.widgets.dialogs.search_dialog.search_dialog_metrics import SearchDialogMetrics, BodyMetric, Spacer
-from PersianPad.core.icon_maker import IconMaker
-from PersianPad.core.font_loader import FontLoader
-from PersianPad.core.qss_loader import QssLoader
-from PersianPad.shared.fonts import Fonts
+from widgets.dialogs.search_dialog.search_dialog_metrics import SearchDialogMetrics, BodyMetric, Spacer
+from core.icon_maker import IconMaker
+from core.font_loader import FontLoader
+from core.qss_loader import QssLoader
+from shared.fonts import Fonts
 
 
 class SearchDialog(QWidget):

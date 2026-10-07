@@ -2,10 +2,10 @@ import sys
 from PySide6.QtWidgets import QWidget, QApplication, QStyle
 from PySide6.QtCore import Qt, QSize, QRect, Signal
 from PySide6.QtGui import QPixmap, QPainter, QFont, QColor, QMouseEvent
-from PersianPad.core.font_loader import FontLoader
-from PersianPad.shared.fonts import Fonts
-from PersianPad.core.path_handler import PathHandler
-from PersianPad.widgets.RibbonButton.metrics import RibbonButtonMetrics
+from core.font_loader import FontLoader
+from shared.fonts import Fonts
+from core.path_handler import PathHandler
+from widgets.RibbonButton.metrics import RibbonButtonMetrics
 
 class ColorButton(QWidget):
     clicked = Signal()

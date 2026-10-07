@@ -1,12 +1,12 @@
 import sys
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QColorDialog, QTextEdit
-from PersianPad.UI._edit_widget.editor_tools.widget import EditorTools
-from PersianPad.UI._edit_widget.editor_tools.controller import EditorToolsController
-from PersianPad.UI._edit_widget.editor_tools._font_shape.widget import FontShape
-from PersianPad.UI._edit_widget.editor_tools.font_setting.widget import FontSetting
-from PersianPad.UI._edit_widget.editor_tools.clip_board.widget import ClipBoardWidget
-from PersianPad.UI._edit_widget.editor_tools.find_replace.widget import FindReplaceText
-from PersianPad.UI._edit_widget.editor_tools.text_justification.widget import TextJustify
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit
+from UI.edit_widget.editor_tools.widget import EditorTools
+from UI.edit_widget.editor_tools.controller import EditorToolsController
+from UI.edit_widget.editor_tools.font_shape.widget import FontShape
+from UI.edit_widget.editor_tools.font_setting.widget import FontSetting
+from UI.edit_widget.editor_tools.clip_board.widget import ClipBoardWidget
+from UI.edit_widget.editor_tools.find_replace.widget import FindReplaceText
+from UI.edit_widget.editor_tools.text_justification.widget import TextJustify
 
 
 class Test(QWidget):

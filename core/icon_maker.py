@@ -1,6 +1,6 @@
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QSize, Qt
-from PersianPad.core.path_handler import PathHandler
+from core.path_handler import PathHandler
 
 
 class IconMaker:

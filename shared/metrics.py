@@ -26,28 +26,14 @@ class NavigationBarMetrics:
 class ContainerWidgetMetrics:
     """Metrics for the container widget"""
     width: int = MainWindowMetrics.width
-    height: int = 0.2 * MainWindowMetrics.height # 30% OF THE WINDOW = 216 IN HERE
-
-
-@dataclass
-class FileManagerMetrics:
-    """Metrics for the file manager"""
-    width: int = 576
-    height: int = MainWindowMetrics.height
-
-    button_width: int = 80
-    button_height: int = 100
-
-    label_height: int = 30
-    label_width: int = 576
+    height: int = int(0.2 * MainWindowMetrics.height) # 30% OF THE WINDOW = 216 IN HERE
 
 #==============================================
 @dataclass
 class TextSettingsMetrics:
     """Metrics for the text setting widget"""
     size: QSize = QSize(MainWindowMetrics.width, int(MainWindowMetrics.height * 0.2))
-    height: int = MainWindowMetrics.height * 0.2
-
+    height: int = int(MainWindowMetrics.height * 0.2)
 
 
 class ClipboardMetrics:
@@ -86,6 +72,41 @@ class FontShapeMetrics:
     """Metrics for the text font shape widget"""
     size: QSize = QSize(210, TextSettingsMetrics.height)
     combo_box_size: QSize = QSize(200, 40)
+#==================================================================
+@dataclass
+class FilePageMetrics:
+    """Metrics for the file path widget"""
+    SIZE: QSize = QSize(MainWindowMetrics.width, int(MainWindowMetrics.height * 0.2))
+
+@dataclass
+class FileManagerMetrics:
+    """Metrics for the file manager"""
+    width: int = 500
+    height: int = FilePageMetrics.SIZE.height()
+
+    button_width: int = 80
+    button_height: int = 100
+
+    label_height: int = 30
+    label_width: int = 500
+
+
+@dataclass
+class ListWidgetMetrics:
+    """Metrics for the list widget"""
+    SIZE: QSize = QSize(480, FilePageMetrics.SIZE.height() - 20)
+
+
+@dataclass
+class LabelInfoMetrics:
+    """Metrics for the label info widget"""
+    SIZE: QSize = QSize(300, FilePageMetrics.SIZE.height())
+
+class FileListMetrics:
+    """Metrics for the file list widget"""
+    SIZE: QSize = QSize(480, FilePageMetrics.SIZE.height())
+
+
 
 #==================================================================
 @dataclass

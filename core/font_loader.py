@@ -1,6 +1,6 @@
 from pathlib import Path
 from PySide6.QtGui import QFont, QFontDatabase
-from PersianPad.shared.fonts import Fonts
+from shared.fonts import Fonts
 
 class FontLoader:
     def __init__(self):
