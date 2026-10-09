@@ -4,7 +4,6 @@ QWidget#search_dialog {
     background-color: #fafeff;
     border-radius: 10px;
     border: 1px solid #d1d1d1;
-    overflow: hidden;
 }
 
 
@@ -12,7 +11,6 @@ QFrame#title_bar {
     background-color: transparent;
     border: 1px solid #d1d1d1;
     border-radius: 0;
-    overflow: hidden;
 }
 
 QLabel#title_label {
@@ -73,7 +71,7 @@ QFrame#buttons_frame {
     border-top-right-radius: 0px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    overflow: hidden;
+
 }
 
 QPushButton#next_button {

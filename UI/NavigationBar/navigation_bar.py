@@ -1,12 +1,15 @@
-import sys
 from core.path_handler import PathHandler
-from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QButtonGroup, QHBoxLayout
+from PySide6.QtWidgets import QWidget, QPushButton, QButtonGroup, QHBoxLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap, QIcon
 from shared.metrics import NavigationBarMetrics
 from shared.colors import Color
 from core.font_loader import FontLoader
 from shared.fonts import Fonts
+
+from UI.edit_widget.FilePage.file_page import FilePage
+from UI.edit_widget.editor_tools.widget import EditorTools
+
 
 class NavigationBar(QWidget):
     def __init__(self, parent=None):
@@ -15,7 +18,9 @@ class NavigationBar(QWidget):
         self.setObjectName("NavigationBar")
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.setFixedSize(NavigationBarMetrics.width, NavigationBarMetrics.height)
+
         self.fontLoader = FontLoader()
+
         self.font = self.fontLoader.load_font(font_name=Fonts.DEFAULT_FONT_NAME)
         self.setFont(self.font)
 
@@ -27,7 +32,7 @@ class NavigationBar(QWidget):
         self.edit_btn = QPushButton("ویرایش")
         # self.page_setup_btn = QPushButton("صفحه")
         # self.view_btn = QPushButton("نمایش")
-        self.help_btn = QPushButton("راهنما")
+        # self.help_btn = QPushButton("راهنما")
 
         icon_path = PathHandler.icon("setting.png")
         pixmap = QPixmap(icon_path)
@@ -41,11 +46,10 @@ class NavigationBar(QWidget):
 
         self.btn_group = QButtonGroup(self)
         self.btn_group.setExclusive(True)
-        self.btn_group.buttonClicked.connect(self.button_clicked)
-        btn_id = 1
+        btn_id = 0
 
-        btn_list = [self.file_btn, self.edit_btn, self.help_btn]
-        object_name_list = ["file_button", "edit_button", "help_button"]
+        btn_list = [self.file_btn, self.edit_btn]
+        object_name_list = ["file_button", "edit_button"]
 
         for btn, object_name in zip(btn_list, object_name_list):
             self.layout.addWidget(btn)
@@ -57,6 +61,7 @@ class NavigationBar(QWidget):
             btn.setFixedSize(NavigationBarMetrics.btn_width, NavigationBarMetrics.btn_height)
             btn_id += 1
         self.file_btn.setChecked(True)
+
 
         self.layout.addStretch()
         self.layout.addWidget(self.setting_btn)
@@ -89,16 +94,3 @@ class NavigationBar(QWidget):
                         background-color: {color.NavigationBarColors.SELECTED_BTN};
                     }}
                 """)
-
-
-    @staticmethod
-    def button_clicked(btn) -> None:
-        print(f"button clicked {btn}\n button text: {btn.text()}")
-        return None
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = NavigationBar()
-    window.show()
-    sys.exit(app.exec())

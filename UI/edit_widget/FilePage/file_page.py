@@ -9,9 +9,10 @@ from UI.edit_widget.FilePage.FileManager.model import FileModel
 
 
 class FilePage(QWidget):
-    def __init__(self, editor: QTextEdit, parent=None):
+    def __init__(self, editor: QTextEdit, parent:QWidget | None=None):
         super().__init__(parent)
-        self.setFixedSize(ContainerWidgetMetrics.SIZE)
+        self.setMinimumWidth(ContainerWidgetMetrics.width)
+        self.setFixedHeight(ContainerWidgetMetrics.height)
 
         self.model = FileModel()
         self.service = FileService(self.model, editor)
@@ -24,15 +25,16 @@ class FilePage(QWidget):
         self.info_label = InfoLabel(self.files_list, self)
 
         main_layout = QHBoxLayout(self)
-        main_layout.addStretch(7)
+
+        main_layout.addStretch(1)
         main_layout.addWidget(self.info_label)
-        main_layout.addStretch(2)
-        main_layout.addWidget(self.vertical_line(125))
-        main_layout.addStretch(2)
+        main_layout.addStretch(1)
+        main_layout.addWidget(self.vertical_line(140))
+        main_layout.addStretch(1)
         main_layout.addWidget(self.files_list)
-        main_layout.addStretch(2)
-        main_layout.addWidget(self.vertical_line(125))
-        main_layout.addStretch(2)
+        main_layout.addStretch(1)
+        main_layout.addWidget(self.vertical_line(140))
+        main_layout.addStretch(1)
         main_layout.addWidget(self.file_manager)
 
     @staticmethod

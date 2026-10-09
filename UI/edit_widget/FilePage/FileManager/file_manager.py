@@ -32,7 +32,7 @@ class FileManager(QWidget):
         lbl_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.title_label = QLabel("مدیریت فایل", self)
         self.title_label.setFixedHeight(FileManagerMetrics.label_height)
-        self.title_label.setStyleSheet("font_name-weight: bold;")
+        self.title_label.setStyleSheet("font_name-weight: 700;")
         lbl_layout.addWidget(self.title_label)
 
         self.btn_layout = QHBoxLayout()
@@ -66,6 +66,7 @@ class FileManager(QWidget):
             self.btn_layout.addStretch()
             self.btn_layout.addWidget(self.vertical_line(120))
             self.btn_layout.addStretch()
+        self.btn_layout.addWidget(self.vertical_line(120))
 
         self.main_layout.addLayout(self.btn_layout)
         self.main_layout.addStretch()

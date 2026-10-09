@@ -1,12 +1,13 @@
 from pathlib import Path
 from PySide6.QtGui import QFont, QFontDatabase
-from shared.fonts import Fonts
+
 
 class FontLoader:
     def __init__(self):
         pass
 
-    def get_font_path(self, font_name: str) -> Path:
+    @staticmethod
+    def get_font_path(font_name: str) -> Path:
         """
         this method is used to get the font_name path from specific folder and return its path
         :param font_name:
@@ -18,7 +19,7 @@ class FontLoader:
         path = DIR_PATH / font_name
 
         if not path.exists():
-            raise Exception(f'{font_name} not exist please add it to resources\fonts folder')
+            raise Exception(f'{font_name} not exist please add it to resources.fonts folder')
         return path
 
     def load_font(self, font_name: str, size: int = 8) -> QFont:

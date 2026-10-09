@@ -27,7 +27,7 @@ class ContainerWidgetMetrics:
     """Metrics for the container widget"""
     SIZE: QSize = QSize(MainWindowMetrics.width, int(0.22 * MainWindowMetrics.height))
     width: int = MainWindowMetrics.width
-    height: int = int(0.2 * MainWindowMetrics.height) # 30% OF THE WINDOW = 216 IN HERE
+    height: int = int(0.22 * MainWindowMetrics.height) # 30% OF THE WINDOW = 216 IN HERE
 
 #==============================================
 @dataclass

@@ -1,34 +1,40 @@
 import sys
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QStackedWidget, QFrame
 from UI.edit_widget.editor_tools.widget import EditorTools
-from UI.edit_widget.editor_tools.controller import EditorToolsController
-from UI.edit_widget.editor_tools.font_shape.widget import FontShape
-from UI.edit_widget.editor_tools.font_setting.widget import FontSetting
-from UI.edit_widget.editor_tools.clip_board.widget import ClipBoardWidget
-from UI.edit_widget.editor_tools.find_replace.widget import FindReplaceText
-from UI.edit_widget.editor_tools.text_justification.widget import TextJustify
+from UI.NavigationBar.navigation_bar import NavigationBar
+from UI.edit_widget.FilePage.file_page import FilePage
 
 
 class Test(QWidget):
     def __init__(self):
         super().__init__()
         self.editor = QTextEdit()
+        self.editor_tools = EditorTools(self.editor)
+        self.file_page = FilePage(editor=self.editor)
+        self.navigation_bar = NavigationBar(self)
+        self.switch_widget = QStackedWidget(self)
 
-        self.font_shape = FontShape()
-        self.font_setting = FontSetting()
-        self.text_justify = TextJustify()
-        self.Find_Replace_Text = FindReplaceText()
-        self.Clip_Board_Widget = ClipBoardWidget()
-        self.controller = EditorToolsController(font_shape=self.font_shape, font_setting=self.font_setting, text_justification=self.text_justify,
-                                                find_replace=self.Find_Replace_Text, clip_board=self.Clip_Board_Widget, editor=self.editor)
-        self.editor_tools = EditorTools(font_shape=self.font_shape, font_setting=self.font_setting, text_justification=self.text_justify,
-                                                find_replace=self.Find_Replace_Text, clip_board=self.Clip_Board_Widget, controller=self.controller)
+        self.switch_widget.addWidget(self.file_page)
+        self.switch_widget.addWidget(self.editor_tools)
 
+        self.navigation_bar.btn_group.idClicked.connect(self.switch_widget_bar)
 
         layout = QVBoxLayout(self)
-        layout.addWidget(self.editor_tools)
+        layout.addWidget(self.navigation_bar)
+        layout.addWidget(self.HF())
+        layout.addWidget(self.switch_widget)
         layout.addWidget(self.editor)
 
+    def switch_widget_bar(self, btn: int) -> None:
+        if 0 <= btn < self.switch_widget.count():
+            self.switch_widget.setCurrentIndex(btn)
+
+    def HF(self):
+        frame = QFrame(self)
+        frame.setFrameShape(QFrame.Shape.HLine)
+        frame.setFrameShadow(QFrame.Shadow.Sunken)
+        frame.setMinimumWidth(self.width())
+        return frame
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

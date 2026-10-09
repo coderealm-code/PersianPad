@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QHBoxLayout, QFrame
+from PySide6.QtWidgets import QHBoxLayout, QFrame, QTextEdit
 from PySide6.QtCore import Qt
 from UI.edit_widget.editor_tools.font_shape.widget import FontShape
 from UI.edit_widget.editor_tools.font_setting.widget import FontSetting
@@ -9,20 +9,23 @@ from UI.edit_widget.editor_tools.controller import EditorToolsController
 from shared.metrics import TextSettingsMetrics
 
 
+
 class EditorTools(QFrame):
-    def __init__(self, controller: EditorToolsController, font_shape: FontShape, clip_board: ClipBoardWidget, find_replace: FindReplaceText,
-                 font_setting: FontSetting, text_justification: TextJustify, parent=None):
+    def __init__(self, editor: QTextEdit, parent=None):
         super().__init__(parent)
         self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.setMinimumWidth(TextSettingsMetrics.size.width())
         self.setFixedHeight(TextSettingsMetrics.size.height())
 
-        self.controller = controller
-        self.find_replace = find_replace
-        self.font_shape = font_shape
-        self.clip_board = clip_board
-        self.font_setting = font_setting
-        self.text_justification = text_justification
+         # همه ساخنه شود فقط ادیتور ورودی باشد!
+        self.editor = editor
+        self.find_replace = FindReplaceText(self)
+        self.font_shape = FontShape(self)
+        self.clip_board = ClipBoardWidget(self)
+        self.font_setting = FontSetting(self)
+        self.text_justification = TextJustify(self)
+        self.controller = EditorToolsController(self.editor, self.font_shape, self.clip_board, self.find_replace,
+                                                self.font_setting, self.text_justification)
 
         self.main_layout = QHBoxLayout(self)
         self.main_layout.setContentsMargins(0, 0, 5, 0)
