@@ -27,16 +27,15 @@ class ListWidget(QListWidget):
         QssLoader.load_qss(name)
         return name
 
-
     def set_data(self, data_model: FileModel) -> None:
         item = QListWidgetItem(self)
         item.setData(Qt.ItemDataRole.UserRole, data_model.file_name)
         item.setData(Qt.ItemDataRole.UserRole + 1, data_model.file_path)
-        if data_model.file_name.endswith(".pdf"):
-            item.setData(Qt.ItemDataRole.UserRole + 2, IconMaker.icon("pdf.png"))
-            return None
-        item.setData(Qt.ItemDataRole.UserRole + 2, IconMaker.icon("doc.png"))
-        return None
+        if data_model.file_name:
+            icon_name = ("pdf.png" if data_model.file_name.lower().endswith(".pdf") else "doc.png")
+            item.setData(Qt.ItemDataRole.UserRole + 2, IconMaker.icon(icon_name))
+
+        item.setData(Qt.ItemDataRole.UserRole + 3, data_model)
 
 
 if __name__ == '__main__':

@@ -8,7 +8,8 @@ from PySide6.QtPrintSupport import QPrinter
 
 class FileService:
     ALLOWED_EXTENSIONS: set = {".txt", ".pdf"}
-    def __init__(self, model: FileModel, editor: QTextEdit):
+
+    def __init__(self, model: FileModel, editor: QTextEdit) -> None:
         self.editor = editor
         self.model = model
         self.models_list: list[FileModel] = []
@@ -83,10 +84,10 @@ class FileService:
         return None
 
 
-    def save_as(self):
+    def save_as(self) -> bool:
         file_path, _ = QFileDialog.getSaveFileName(None, "ذخیره فایل", "", "Text Files (*.txt)")
         if not file_path:
-            return None
+            return False
         file_path = PathHandler.optimized_path(file_path)
         if not file_path.name.endswith(".txt"):
             new_path = file_path.with_suffix(".txt")
@@ -99,14 +100,14 @@ class FileService:
         self.model.file_path = new_path
         self.model.create_date = datetime.now()
         self.append_list(self.model)
-        return None
+        return True
 
 
-    def export_pdf(self) -> None:
+    def export_pdf(self) -> bool:
         file_path, _ = QFileDialog.getSaveFileName(None, "ذخیره به PDF", "",
                                                    "PDF Files (*.pdf);;All Files (*)")
         if not file_path:
-            return None
+            return False
         new_path = PathHandler.optimized_path(file_path)
 
         if new_path.suffix != ".pdf":
@@ -117,7 +118,12 @@ class FileService:
         printer.setOutputFileName(str(new_path))
         self.editor.document().print_(printer)
         QMessageBox.information(self.editor, "موفق", f"PDF در مسیر {new_path}ذخیره شد ")
-        return None
+        self.model.file_name = new_path.name
+        self.model.is_saved = True
+        self.model.file_path = new_path
+        self.model.create_date = datetime.now()
+        self.append_list(self.model)
+        return True
 
 
     @staticmethod

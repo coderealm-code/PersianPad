@@ -17,7 +17,7 @@ QFrame#title_bar {
 
 QLabel#title_label {
     color: black;
-    font-weight: bold;
+    font-weight: 700;
     font-size: 14px;
 }
 

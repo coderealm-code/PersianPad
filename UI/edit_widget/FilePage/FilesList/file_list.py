@@ -1,14 +1,13 @@
-from PySide6.QtWidgets import QWidget, QGroupBox, QVBoxLayout, QApplication
+from PySide6.QtWidgets import QWidget, QGroupBox, QVBoxLayout
 from PySide6.QtCore import Qt
+from UI.edit_widget.FilePage.FileManager.model import FileModel
 from shared.metrics import FileListMetrics
 from widgets.list_widget.list_widget import ListWidget
-from UI.edit_widget.FilePage.FileManager.service import FileService
 
 
 class FilesList(QWidget):
-    def __init__(self, service: FileService, parent=None):
+    def __init__(self, parent:QWidget | None=None):
         super().__init__(parent)
-        self.service: FileService = service
         self.setObjectName("FilesList")
         self.setFixedSize(FileListMetrics.SIZE)
 
@@ -19,24 +18,19 @@ class FilesList(QWidget):
         group_box: QGroupBox = QGroupBox("فایل های اخیر")
         group_layout: QVBoxLayout = QVBoxLayout(group_box)
         group_box.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        group_layout.setContentsMargins(5, 0, 5, 0)
-        group_layout.setSpacing(10)
+        group_layout.setContentsMargins(0, 0, 0, 0)
+        group_layout.setSpacing(0)
 
         self.list_widget: ListWidget = ListWidget(group_box)
-        for model in self.service.models_list:
-            self.list_widget.set_data(model)
 
         group_layout.addWidget(self.list_widget)
         main_layout.addWidget(group_box)
         self.setLayout(main_layout)
 
+    def add_file(self, model: FileModel) -> None:
+        self.list_widget.set_data(model)
 
 
 
 
-if __name__ == "__main__":
-    import sys
-    app = QApplication(sys.argv)
-    window = FilesList()
-    window.show()
-    sys.exit(app.exec())
+

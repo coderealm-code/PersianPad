@@ -25,6 +25,7 @@ class NavigationBarMetrics:
 @dataclass
 class ContainerWidgetMetrics:
     """Metrics for the container widget"""
+    SIZE: QSize = QSize(MainWindowMetrics.width, int(0.22 * MainWindowMetrics.height))
     width: int = MainWindowMetrics.width
     height: int = int(0.2 * MainWindowMetrics.height) # 30% OF THE WINDOW = 216 IN HERE
 
@@ -94,7 +95,7 @@ class FileManagerMetrics:
 @dataclass
 class ListWidgetMetrics:
     """Metrics for the list widget"""
-    SIZE: QSize = QSize(480, FilePageMetrics.SIZE.height() - 20)
+    SIZE: QSize = QSize(440, FilePageMetrics.SIZE.height() - 20)
 
 
 @dataclass
@@ -104,7 +105,7 @@ class LabelInfoMetrics:
 
 class FileListMetrics:
     """Metrics for the file list widget"""
-    SIZE: QSize = QSize(480, FilePageMetrics.SIZE.height())
+    SIZE: QSize = QSize(450, FilePageMetrics.SIZE.height())
 
 
 

@@ -1,5 +1,4 @@
-import sys
-from PySide6.QtWidgets import QHBoxLayout, QApplication, QFrame
+from PySide6.QtWidgets import QHBoxLayout, QFrame
 from PySide6.QtCore import Qt
 from UI.edit_widget.editor_tools.font_shape.widget import FontShape
 from UI.edit_widget.editor_tools.font_setting.widget import FontSetting

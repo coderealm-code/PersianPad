@@ -1,7 +1,9 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QLabel, QFrame, QGroupBox, QHBoxLayout, QVBoxLayout, QWidget, QApplication
+from PySide6.QtWidgets import QLabel, QFrame, QGroupBox, QVBoxLayout, QWidget, QApplication
+from UI.edit_widget.FilePage.FileManager.model import FileModel
 from shared.metrics import LabelInfoMetrics
 from UI.edit_widget.FilePage.FilesList.file_list import FilesList
+
 
 class InfoLabel(QFrame):
     def __init__(self, file_list: FilesList, parent: QWidget | None = None):
@@ -22,36 +24,37 @@ class InfoLabel(QFrame):
 
         self.info_lbl = QLabel()
         self.info_lbl.setStyleSheet("QLabel { padding: 5px; font-size: 14px; }")
-        self.set_text()
         group_layout.addWidget(self.info_lbl)
 
         main_layout.addWidget(group_box)
         self.setLayout(main_layout)
+        self.file_list.list_widget.itemClicked.connect(self.model_info)
+        self.set_text(None)
 
-    def set_text(self) -> None:
-        model = self.file_list.list_widget.itemCliked.connect(self.model_info)
-        name = model.file_name
-        path = model.file_path
-        created_date = model.created_date
-        if not(name or path or created_date):
+
+    def set_text(self, model: FileModel | None) -> None:
+        if model is None:
             name = "---"
             path = "---"
             created_date = "---"
-        self.info_lbl.setText(f"""
- اسم فایل :  {name}
+        else:
+            name = model.file_name
+            path = model.file_path
+            created_date = model.create_date
 
-مسیر فایل :  {path}
+        self.info_lbl.setText(
+            f"""
+اسم فایل : {name}
 
-تاریخ ایجاد :  {created_date}
+مسیر فایل : {path}
+
+تاریخ ایجاد : {created_date}
 """)
 
-    def model_info(self):
-        item = self.file_list.list_widget.currentItem()
-        name = item.data(Qt.ItemDataRole.UserRole)
-        for model in self.file_list.service.models_list:
-            if name == model.file_name:
-                return model
-        return None
+    def model_info(self, item) -> None:
+        model = item.data(Qt.ItemDataRole.UserRole + 3)
+        if isinstance(model, FileModel):
+            self.set_text(model)
 
 
 if __name__ == "__main__":
